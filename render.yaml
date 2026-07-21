@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: poderosa-comm-visual-engine
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 20.18.0
+      - key: APP_NAME
+        value: Poderosa-COMM Visual Engine
+      - key: OPERATION_NAME
+        value: Poderosa
+      - key: RENDER_API_KEY
+        generateValue: true
