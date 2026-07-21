@@ -494,15 +494,28 @@ function normalizeSlide10Data(body) {
  * NORMALIZAR DATOS - SLIDE 11
  ****************************************************/
 
-function normalizeSlide11Data(body) {
-  const rawMeses = Array.isArray(body.meses)
-    ? body.meses
-    : Array.isArray(body.mensualItems)
-      ? body.mensualItems
-      : [];
+function normalizeSlide11Data(body = {}) {
+  /**************************************************
+   * 1. EVOLUCIÓN MENSUAL POR TIPO
+   *    Interior mina vs superficie
+   **************************************************/
 
-  let meses = rawMeses
-    .filter(item => item && (item.mes || item.periodo || item[0]))
+  const rawTipoItems = Array.isArray(body.tipoItems)
+    ? body.tipoItems
+    : Array.isArray(body.meses)
+      ? body.meses
+      : Array.isArray(body.mensualItems)
+        ? body.mensualItems
+        : [];
+
+  const tipoItems = rawTipoItems
+    .filter(item => {
+      if (Array.isArray(item)) {
+        return item[0];
+      }
+
+      return item && (item.mes || item.periodo);
+    })
     .map(item => {
       if (Array.isArray(item)) {
         const mina = toNumber(item[1]);
@@ -520,8 +533,8 @@ function normalizeSlide11Data(body) {
       const mina = toNumber(
         item.mina ??
         item.im ??
-        item.atencionesMina ??
         item.interiorMina ??
+        item.atencionesMina ??
         0
       );
 
@@ -549,49 +562,333 @@ function normalizeSlide11Data(body) {
     .filter(item => item.mes);
 
 
-  const totalMinaGlobal =
-    toNumber(body.totalMinaGlobal ?? body.minaAtenciones ?? body.totalMina ?? 0) ||
-    meses.reduce((acc, item) => acc + item.mina, 0);
+  /**************************************************
+   * 2. EVOLUCIÓN MENSUAL POR UNIDAD PRODUCTIVA
+   *    Santa María vs Marañón
+   **************************************************/
 
-  const totalSuperficieGlobal =
-    toNumber(body.totalSuperficieGlobal ?? body.superficieAtenciones ?? body.totalSuperficie ?? 0) ||
-    meses.reduce((acc, item) => acc + item.superficie, 0);
+  const rawUpItems = Array.isArray(body.upItems)
+    ? body.upItems
+    : Array.isArray(body.mesesUP)
+      ? body.mesesUP
+      : Array.isArray(body.evolucionUP)
+        ? body.evolucionUP
+        : [];
 
-  const totalAtenciones =
-    toNumber(body.totalAtenciones ?? body.totalGeneral ?? 0) ||
-    meses.reduce((acc, item) => acc + item.total, 0) ||
-    totalMinaGlobal + totalSuperficieGlobal;
+  const upItems = rawUpItems
+    .filter(item => {
+      if (Array.isArray(item)) {
+        return item[0];
+      }
 
-  const mesActual = meses[meses.length - 1] || {
+      return item && (item.mes || item.periodo);
+    })
+    .map(item => {
+      if (Array.isArray(item)) {
+        return {
+          mes: String(item[0] || '').trim(),
+          santaMaria: toNumber(item[1]),
+          maranon: toNumber(item[2])
+        };
+      }
+
+      return {
+        mes: String(item.mes || item.periodo || '').trim(),
+
+        santaMaria: toNumber(
+          item.santaMaria ??
+          item.santa_maria ??
+          item.santa ??
+          item.sm ??
+          0
+        ),
+
+        maranon: toNumber(
+          item.maranon ??
+          item['marañon'] ??
+          item.mn ??
+          0
+        )
+      };
+    })
+    .filter(item => item.mes);
+
+
+  /**************************************************
+   * 3. FILAS DE LA TABLA RESUMEN
+   **************************************************/
+
+  const rawResumenRows = Array.isArray(body.resumenRows)
+    ? body.resumenRows
+    : Array.isArray(body.resumen)
+      ? body.resumen
+      : Array.isArray(body.tablaResumen)
+        ? body.tablaResumen
+        : [];
+
+  let resumenRows = rawResumenRows
+    .filter(item => {
+      if (Array.isArray(item)) {
+        return item[0];
+      }
+
+      return item && (item.up || item.unidad || item.nombre);
+    })
+    .map(item => {
+      if (Array.isArray(item)) {
+        const mina = toNumber(item[1]);
+        const superficie = toNumber(item[2]);
+        const total = toNumber(item[3]) || mina + superficie;
+
+        return {
+          up: String(item[0] || '').trim(),
+          mina,
+          superficie,
+          total,
+          porcentaje:
+            item[4] !== undefined && item[4] !== null
+              ? String(item[4]).trim()
+              : ''
+        };
+      }
+
+      const mina = toNumber(
+        item.mina ??
+        item.im ??
+        item.interiorMina ??
+        0
+      );
+
+      const superficie = toNumber(
+        item.superficie ??
+        item.sup ??
+        0
+      );
+
+      const total = toNumber(item.total) || mina + superficie;
+
+      return {
+        up: String(
+          item.up ||
+          item.unidad ||
+          item.nombre ||
+          ''
+        ).trim(),
+
+        mina,
+        superficie,
+        total,
+
+        porcentaje:
+          item.porcentaje ??
+          item.pct ??
+          item.participacion ??
+          ''
+      };
+    })
+    .filter(item => item.up);
+
+
+  /**************************************************
+   * 4. DATOS DEL MES SELECCIONADO
+   **************************************************/
+
+  const mesActualTipo = tipoItems[tipoItems.length - 1] || {
     mes: '-',
     mina: 0,
     superficie: 0,
     total: 0
   };
 
+  const totalMinaGlobal =
+    toNumber(
+      body.totalMinaGlobal ??
+      body.minaAtenciones ??
+      body.totalMina ??
+      0
+    ) || mesActualTipo.mina;
+
+  const totalSuperficieGlobal =
+    toNumber(
+      body.totalSuperficieGlobal ??
+      body.superficieAtenciones ??
+      body.totalSuperficie ??
+      0
+    ) || mesActualTipo.superficie;
+
+  const totalAtenciones =
+    toNumber(
+      body.totalAtenciones ??
+      body.totalGeneral ??
+      body.totalPeriodo ??
+      0
+    ) ||
+    mesActualTipo.total ||
+    totalMinaGlobal + totalSuperficieGlobal;
+
   const totalMesActualValue =
-    toNumber(body.totalMesActualValue ?? body.totalMesActual ?? body.totalPeriodo ?? 0) ||
-    mesActual.total;
+    toNumber(
+      body.totalMesActualValue ??
+      body.totalMesActual ??
+      body.totalPeriodo ??
+      0
+    ) || totalAtenciones;
+
+
+  /**************************************************
+   * 5. PARTICIPACIONES
+   **************************************************/
 
   const participacionMina =
-    body.participacionMina ||
+    body.participacionMina ??
     calcPctOneDecimal(totalMinaGlobal, totalAtenciones);
 
   const participacionSuperficie =
-    body.participacionSuperficie ||
+    body.participacionSuperficie ??
     calcPctOneDecimal(totalSuperficieGlobal, totalAtenciones);
+
+
+  /**************************************************
+   * 6. VARIACIÓN FRENTE AL MES ANTERIOR
+   **************************************************/
+
+  const mesAnteriorTipo =
+    tipoItems.length >= 2
+      ? tipoItems[tipoItems.length - 2]
+      : null;
+
+  let variacionVsPrevio =
+    body.variacionVsPrevio ??
+    body.variacionVsAnterior ??
+    body.variacionMensual ??
+    '';
+
+  if (
+    variacionVsPrevio === '' ||
+    variacionVsPrevio === null ||
+    variacionVsPrevio === undefined
+  ) {
+    const totalAnterior = mesAnteriorTipo
+      ? toNumber(mesAnteriorTipo.total)
+      : 0;
+
+    variacionVsPrevio = totalAnterior
+      ? (
+          ((totalAtenciones - totalAnterior) / totalAnterior) *
+          100
+        ).toFixed(1) + '%'
+      : '0.0%';
+  } else if (
+    typeof variacionVsPrevio === 'number' &&
+    Number.isFinite(variacionVsPrevio)
+  ) {
+    variacionVsPrevio =
+      variacionVsPrevio.toFixed(1) + '%';
+  } else {
+    variacionVsPrevio = String(variacionVsPrevio).trim();
+
+    if (!variacionVsPrevio.includes('%')) {
+      const numericVariation = Number(
+        variacionVsPrevio.replace(',', '.')
+      );
+
+      variacionVsPrevio = Number.isFinite(numericVariation)
+        ? numericVariation.toFixed(1) + '%'
+        : variacionVsPrevio;
+    }
+  }
+
+
+  /**************************************************
+   * 7. COMPLETAR PORCENTAJES DE LA TABLA
+   **************************************************/
+
+  resumenRows = resumenRows.map(item => {
+    let porcentaje = item.porcentaje;
+
+    if (
+      porcentaje === '' ||
+      porcentaje === null ||
+      porcentaje === undefined
+    ) {
+      porcentaje = calcPctOneDecimal(
+        item.total,
+        totalAtenciones
+      );
+    } else if (
+      typeof porcentaje === 'number' &&
+      Number.isFinite(porcentaje)
+    ) {
+      porcentaje =
+        porcentaje > 0 && porcentaje <= 1
+          ? (porcentaje * 100).toFixed(0) + '%'
+          : porcentaje.toFixed(0) + '%';
+    } else {
+      porcentaje = String(porcentaje).trim();
+
+      if (!porcentaje.includes('%')) {
+        const numericPct = Number(
+          porcentaje.replace(',', '.')
+        );
+
+        if (Number.isFinite(numericPct)) {
+          porcentaje =
+            numericPct > 0 && numericPct <= 1
+              ? (numericPct * 100).toFixed(0) + '%'
+              : numericPct.toFixed(0) + '%';
+        }
+      }
+    }
+
+    return {
+      up: item.up,
+      mina: item.mina,
+      superficie: item.superficie,
+      total: item.total,
+      porcentaje
+    };
+  });
+
+
+  /**************************************************
+   * 8. INSIGHT
+   **************************************************/
+
+  const insight =
+    body.insight ||
+    `En ${body.periodo || 'el periodo seleccionado'}, ` +
+    `las atenciones en superficie representan ` +
+    `${participacionSuperficie} del total, mientras que ` +
+    `las atenciones en interior mina representan ` +
+    `${participacionMina}.`;
+
+
+  /**************************************************
+   * 9. OBJETO FINAL ENVIADO A slide11.ejs
+   **************************************************/
 
   return {
     titulo:
       body.titulo ||
-      `${OPERATION_NAME} - ${body.periodo || 'Periodo'} - Atenciones por Tipo y Evolución Mensual`,
+      `${OPERATION_NAME} - ` +
+      `${body.periodo || 'Periodo'} - ` +
+      `Atenciones por UP y Evolución Mensual`,
 
     periodo: body.periodo || 'Periodo',
     logoText: body.logoText || 'COMM',
 
-    meses,
-    mensualItems: meses,
+    // Evolución por tipo
+    meses: tipoItems,
+    mensualItems: tipoItems,
+    tipoItems,
 
+    // Evolución por unidad productiva
+    upItems,
+
+    // Tabla resumen
+    resumenRows,
+
+    // KPI principales
     totalAtenciones,
     totalMinaGlobal,
     totalSuperficieGlobal,
@@ -603,10 +900,9 @@ function normalizeSlide11Data(body) {
     participacionSuperficie,
 
     totalMesActualValue,
+    variacionVsPrevio,
 
-    insight:
-      body.insight ||
-      `Predominio de atenciones en la operación minera (${participacionMina}), evidenciando enfoque en servicios preventivos y controlados.`
+    insight
   };
 }
 
