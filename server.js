@@ -910,38 +910,130 @@ function normalizeSlide11Data(body = {}) {
  * NORMALIZAR DATOS - SLIDE 12
  ****************************************************/
 
-function normalizeSlide12Data(body) {
+function normalizeSlide12Data(body = {}) {
+  const rawRows = Array.isArray(body.resumenRows)
+    ? body.resumenRows
+    : Array.isArray(body.tablaRows)
+      ? body.tablaRows
+      : body.tabla && Array.isArray(body.tabla.rows)
+        ? body.tabla.rows
+        : [];
+
+  const resumenRows = rawRows
+    .filter(item => {
+      if (Array.isArray(item)) return item[0];
+      return item && (item.up || item.unidad || item.nombre);
+    })
+    .map(item => {
+      if (Array.isArray(item)) {
+        const incidentes = toNumber(item[1]);
+        const requerimientos = toNumber(item[2]);
+        const total = toNumber(item[3]) || incidentes + requerimientos;
+
+        return {
+          up: String(item[0] || '').trim(),
+          incidentes,
+          requerimientos,
+          total
+        };
+      }
+
+      const incidentes = toNumber(
+        item.incidentes ??
+        item.incidente ??
+        item.inc ??
+        0
+      );
+
+      const requerimientos = toNumber(
+        item.requerimientos ??
+        item.requerimiento ??
+        item.req ??
+        0
+      );
+
+      const total =
+        toNumber(item.total) ||
+        incidentes + requerimientos;
+
+      return {
+        up: String(
+          item.up ||
+          item.unidad ||
+          item.nombre ||
+          ''
+        ).trim(),
+
+        incidentes,
+        requerimientos,
+        total
+      };
+    })
+    .filter(item => {
+      const up = item.up.toUpperCase();
+
+      return (
+        item.up &&
+        up !== 'TOTAL' &&
+        up !== '%'
+      );
+    });
+
+  const incidentesFilas = resumenRows.reduce(
+    (acc, item) => acc + item.incidentes,
+    0
+  );
+
+  const requerimientosFilas = resumenRows.reduce(
+    (acc, item) => acc + item.requerimientos,
+    0
+  );
+
+  const totalFilas = resumenRows.reduce(
+    (acc, item) => acc + item.total,
+    0
+  );
+
   const kpis = body.kpis || {};
 
-  const totalAtenciones = toNumber(
-    body.totalAtenciones ??
-    kpis.totalAtenciones ??
-    0
-  );
+  const incidentes =
+    toNumber(
+      body.incidentes ??
+      kpis.incidentes ??
+      0
+    ) || incidentesFilas;
 
-  const incidentes = toNumber(
-    body.incidentes ??
-    kpis.incidentes ??
-    0
-  );
+  const requerimientos =
+    toNumber(
+      body.requerimientos ??
+      kpis.requerimientos ??
+      0
+    ) || requerimientosFilas;
 
-  const requerimientos = toNumber(
-    body.requerimientos ??
-    kpis.requerimientos ??
-    0
-  );
-
-  const total = totalAtenciones || incidentes + requerimientos;
+  const totalAtenciones =
+    toNumber(
+      body.totalAtenciones ??
+      kpis.totalAtenciones ??
+      0
+    ) ||
+    totalFilas ||
+    incidentes + requerimientos;
 
   const pctIncidentes =
     body.pctIncidentes ??
     kpis.pctIncidentes ??
-    calcPct(incidentes, total);
+    calcPctNoDecimal(
+      incidentes,
+      totalAtenciones
+    );
 
   const pctRequerimientos =
     body.pctRequerimientos ??
     kpis.pctRequerimientos ??
-    calcPct(requerimientos, total);
+    calcPctNoDecimal(
+      requerimientos,
+      totalAtenciones
+    );
 
   const brecha = toNumber(
     body.brecha ??
@@ -949,23 +1041,51 @@ function normalizeSlide12Data(body) {
     requerimientos - incidentes
   );
 
-  const tabla = normalizeTablaSlide12(body.tabla, {
-    incidentes,
-    requerimientos,
-    total,
-    pctIncidentes,
-    pctRequerimientos
-  });
+  const tabla = normalizeTablaSlide12(
+    body.tabla,
+    {
+      incidentes,
+      requerimientos,
+      total: totalAtenciones,
+      pctIncidentes,
+      pctRequerimientos
+    }
+  );
+
+  const filaMayorIncidencia = resumenRows
+    .slice()
+    .sort(
+      (a, b) =>
+        b.incidentes - a.incidentes
+    )[0];
+
+  const insightAutomatico =
+    filaMayorIncidencia
+      ? `Predominan los requerimientos, con el ${pctRequerimientos} de las atenciones del mes, ` +
+        `lo que evidencia una gestión mayormente planificada y controlada. Además, ` +
+        `${filaMayorIncidencia.up} concentra ${filaMayorIncidencia.incidentes} de los ` +
+        `${incidentes} incidentes (${calcPctNoDecimal(
+          filaMayorIncidencia.incidentes,
+          incidentes
+        )}) y ${filaMayorIncidencia.total} de las ${totalAtenciones} ` +
+        `atenciones totales del periodo.`
+      : `Predominan los requerimientos, con el ${pctRequerimientos} de las atenciones del mes, ` +
+        `lo que evidencia una gestión mayormente planificada y controlada.`;
 
   return {
     titulo:
       body.titulo ||
-      `${OPERATION_NAME} - ${body.periodo || 'Periodo'} - Incidentes vs Requerimientos`,
+      `${OPERATION_NAME} - ` +
+      `${body.periodo || 'Periodo'} - ` +
+      `Incidentes vs Requerimientos`,
 
-    periodo: body.periodo || 'Periodo',
-    logoText: body.logoText || 'COMM',
+    periodo:
+      body.periodo || 'Periodo',
 
-    totalAtenciones: total,
+    logoText:
+      body.logoText || 'COMM',
+
+    totalAtenciones,
     incidentes,
     requerimientos,
     brecha,
@@ -974,13 +1094,16 @@ function normalizeSlide12Data(body) {
     pctRequerimientos,
 
     donutIncidentes: incidentes,
-    donutRequerimientos: requerimientos,
+    donutRequerimientos:
+      requerimientos,
 
+    resumenRows,
+    tablaRows: resumenRows,
     tabla,
 
     insight:
       body.insight ||
-      'La mayoría de las atenciones corresponden a requerimientos, evidenciando prioridad de gestión en actividades planificadas frente a incidencias.'
+      insightAutomatico
   };
 }
 
