@@ -120,10 +120,10 @@
       min-width: 0;
       overflow: hidden;
       display: grid;
-      grid-template-columns: 88px minmax(0, 1fr);
+      grid-template-columns: 74px minmax(0, 1fr);
       align-items: center;
-      gap: 14px;
-      padding: 20px 15px 19px 15px;
+      gap: 11px;
+      padding: 18px 11px 19px;
       border: 1px solid #d8e1ef;
       border-radius: 18px;
       background: #ffffff;
@@ -162,8 +162,8 @@
     }
 
     .kpi-icon {
-      width: 82px;
-      height: 82px;
+      width: 70px;
+      height: 70px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -171,6 +171,10 @@
       color: #ffffff;
       background: linear-gradient(145deg, var(--accent) 0%, var(--accent-dark) 100%);
       box-shadow: 0 9px 18px rgba(5, 40, 95, 0.20);
+    }
+    .kpi-icon svg {
+      width: 44px;
+      height: 44px;
     }
 
     .kpi-content {
@@ -182,15 +186,32 @@
     }
 
     .kpi-label {
-      min-height: 42px;
-      display: flex;
-      align-items: center;
-      color: #0b2b6d;
-      font-size: 15px;
-      font-weight: 900;
-      line-height: 1.18;
-      text-transform: uppercase;
-    }
+  width: 100%;
+  min-height: 42px;
+
+  display: flex;
+  align-items: center;
+
+  color: #0b2b6d;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.15px;
+  text-transform: uppercase;
+
+  white-space: normal;
+  overflow: visible;
+}
+
+.kpi-label-nowrap {
+  white-space: nowrap;
+  font-size: 12.5px;
+}
+
+.kpi-label-long {
+  font-size: 12px;
+  line-height: 1.05;
+}
 
     .kpi-value {
       margin-top: 5px;
@@ -676,7 +697,9 @@
     <article class="kpi-card accent-orange">
       <div class="kpi-icon"><%- iconSvg('clipboard') %></div>
       <div class="kpi-content">
-        <div class="kpi-label">Requerimientos</div>
+        <div class="kpi-label kpi-label-nowrap">
+  Requerimientos
+</div>
         <div class="kpi-value"><%= requerimientosFinal %></div>
         <div class="kpi-sub"><%= pctReqFinal %> del total</div>
       </div>
@@ -694,7 +717,11 @@
     <article class="kpi-card accent-teal">
       <div class="kpi-icon"><%- iconSvg('donut') %></div>
       <div class="kpi-content">
-        <div class="kpi-label">% participación de requerimientos</div>
+        <div class="kpi-label kpi-label-long">
+  % participación<br>
+  de<br>
+  requerimientos
+</div>
         <div class="kpi-value"><%= pctReqFinal %></div>
         <div class="kpi-sub">del total</div>
       </div>
