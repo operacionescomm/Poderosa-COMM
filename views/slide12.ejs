@@ -2,160 +2,805 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Slide 12 Premium</title>
- <link rel="stylesheet" href="/public/styles.css" />
+  <title>Slide 12 - Incidentes vs Requerimientos</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    html,
+    body {
+      width: 1600px;
+      height: 900px;
+      overflow: hidden;
+      background: #edf3fb;
+    }
+
+    .slide {
+      width: 1600px;
+      height: 900px;
+      position: relative;
+      overflow: hidden;
+      padding: 22px 34px 24px;
+      color: #0a2868;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(26, 128, 232, 0.04), transparent 38%),
+        linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+    }
+
+    .top-curve {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 388px;
+      height: 116px;
+      z-index: 0;
+      border-bottom-left-radius: 150px;
+      background: linear-gradient(135deg, #1463dd 0%, #062c82 100%);
+    }
+
+    .header {
+      position: relative;
+      z-index: 2;
+      height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .title-wrap {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      gap: 20px;
+    }
+
+    .title-bar {
+      width: 12px;
+      height: 66px;
+      flex: 0 0 auto;
+      border-radius: 6px;
+      background: linear-gradient(180deg, #1174e8 0%, #12c0c0 100%);
+    }
+
+    .title {
+      max-width: 1120px;
+      color: #0a2868;
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.9px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .logo {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 13px;
+      min-width: 255px;
+      padding-right: 14px;
+      color: #ffffff;
+      font-size: 40px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+    }
+
+    .logo-symbol {
+      width: 46px;
+      height: 26px;
+      border: 5px dashed rgba(255,255,255,0.92);
+      border-radius: 50%;
+      transform: rotate(-17deg);
+    }
+
+    .kpi-row {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 20px;
+      height: 192px;
+      margin-bottom: 28px;
+    }
+
+    .kpi-card {
+      --accent: #1166dc;
+      --accent-dark: #073ca5;
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr);
+      align-items: center;
+      gap: 14px;
+      padding: 20px 15px 19px 15px;
+      border: 1px solid #d8e1ef;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 9px 22px rgba(7, 42, 96, 0.14);
+    }
+
+    .kpi-card::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      right: 4px;
+      bottom: 0;
+      height: 7px;
+      border-radius: 0 0 15px 15px;
+      background: var(--accent);
+    }
+
+    .accent-blue {
+      --accent: #1267e2;
+      --accent-dark: #073da6;
+    }
+
+    .accent-teal {
+      --accent: #0ca0a7;
+      --accent-dark: #087783;
+    }
+
+    .accent-orange {
+      --accent: #ff6900;
+      --accent-dark: #e94e00;
+    }
+
+    .accent-purple {
+      --accent: #7b31de;
+      --accent-dark: #5114af;
+    }
+
+    .kpi-icon {
+      width: 82px;
+      height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 17px;
+      color: #ffffff;
+      background: linear-gradient(145deg, var(--accent) 0%, var(--accent-dark) 100%);
+      box-shadow: 0 9px 18px rgba(5, 40, 95, 0.20);
+    }
+
+    .kpi-content {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .kpi-label {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      color: #0b2b6d;
+      font-size: 15px;
+      font-weight: 900;
+      line-height: 1.18;
+      text-transform: uppercase;
+    }
+
+    .kpi-value {
+      margin-top: 5px;
+      color: var(--accent);
+      font-size: 44px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.7px;
+    }
+
+    .kpi-sub {
+      margin-top: 10px;
+      color: #273a61;
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.15;
+      white-space: nowrap;
+    }
+
+    .content-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 0.49fr 0.51fr;
+      gap: 22px;
+      height: 372px;
+      margin-bottom: 20px;
+    }
+
+    .panel {
+      overflow: hidden;
+      border: 1px solid #d7e1ef;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 9px 22px rgba(7, 42, 96, 0.12);
+    }
+
+    .panel-title {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      padding: 0 30px;
+      color: #ffffff;
+      background: linear-gradient(90deg, #0a3aaa 0%, #1365df 56%, #12b7bd 100%);
+      font-size: 21px;
+      font-weight: 900;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .donut-content {
+      height: 320px;
+      display: grid;
+      grid-template-columns: 58% 42%;
+      align-items: center;
+      padding: 18px 28px 18px 24px;
+    }
+
+    .donut-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .donut {
+      width: 270px;
+      height: 270px;
+      position: relative;
+      border-radius: 50%;
+      filter: drop-shadow(0 8px 10px rgba(9, 45, 101, 0.10));
+    }
+
+    .donut::after {
+      content: '';
+      position: absolute;
+      inset: 72px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: inset 0 0 0 1px rgba(214, 224, 239, 0.55);
+    }
+
+    .legend {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 26px;
+    }
+
+    .legend-item {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .legend-dot {
+      width: 23px;
+      height: 23px;
+      margin-top: 3px;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(7, 42, 96, 0.12);
+    }
+
+    .legend-dot.blue {
+      background: linear-gradient(145deg, #2e82f4 0%, #0c55cf 100%);
+    }
+
+    .legend-dot.orange {
+      background: linear-gradient(145deg, #ff8b12 0%, #ff5900 100%);
+    }
+
+    .legend-name {
+      color: #0b2b6d;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .legend-value {
+      margin-top: 7px;
+      color: #26395f;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .table-wrap {
+      height: 320px;
+      padding: 15px 15px 17px;
+    }
+
+    table {
+      width: 100%;
+      height: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      border: 1px solid #d7dfeb;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    th {
+      height: 39px;
+      padding: 5px 8px;
+      color: #ffffff;
+      background: linear-gradient(180deg, #0b3b9d 0%, #0d55c3 100%);
+      font-size: 17px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    td {
+      height: 50px;
+      padding: 5px 8px;
+      color: #15284d;
+      background: #ffffff;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .row-total td,
+    .row-percent td {
+      color: #0a2868;
+      background: linear-gradient(180deg, #edf5ff 0%, #e5effb 100%);
+      font-weight: 900;
+    }
+
+    .insight-row {
+      position: relative;
+      z-index: 2;
+      height: 120px;
+      display: grid;
+      grid-template-columns: 140px 320px 2px 1fr;
+      align-items: center;
+      gap: 26px;
+      padding: 13px 30px 13px 16px;
+      border: 1px solid #d7e1ef;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 8px 20px rgba(7, 42, 96, 0.10);
+    }
+
+    .insight-icon-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .insight-icon {
+      width: 106px;
+      height: 106px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 1px solid #e1ebf5;
+      background: linear-gradient(180deg, #f3f9ff 0%, #eaf3fc 100%);
+    }
+
+    .insight-heading {
+      color: #092a6c;
+      font-size: 25px;
+      font-weight: 900;
+      line-height: 1.35;
+      text-transform: uppercase;
+    }
+
+    .insight-divider {
+      width: 2px;
+      height: 86px;
+      background: linear-gradient(180deg, #1c86ef 0%, #64aef4 100%);
+    }
+
+    .insight-text {
+      color: #17284d;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.45;
+    }
+
+    svg {
+      display: block;
+    }
+  </style>
 </head>
 <body>
-  <div class="canvas">
-    <div class="card-main">
-      <div class="topbar">
-        <div class="title-wrap">
-          <div class="title-accent"></div>
-          <h1><%= titulo %></h1>
-        </div>
-        <div class="logo-wrap">
-          <div class="logo-circle"></div>
-          <div class="logo-text"><%= logoText %></div>
-        </div>
-      </div>
+<%
+  function num(value) {
+    return Number(value) || 0;
+  }
 
-      <div class="divider"></div>
+  function pctNumber(value) {
+    if (typeof value === 'string') {
+      return Number(value.replace('%', '').replace(',', '.').trim()) || 0;
+    }
+    return Number(value) || 0;
+  }
 
-      <div class="kpi-row">
-        <div class="kpi kpi-blue">
-          <div class="kpi-icon">👥</div>
-          <div class="kpi-text">
-            <div class="kpi-label">TOTAL ATENCIONES</div>
-            <div class="kpi-value"><%= totalAtenciones %></div>
-            <div class="kpi-sub">100% del total</div>
-          </div>
-        </div>
+  function pctText(value, numerator, total, decimals) {
+    const places = Number.isInteger(decimals) ? decimals : 0;
 
-        <div class="kpi kpi-teal">
-          <div class="kpi-icon">🛡</div>
-          <div class="kpi-text">
-            <div class="kpi-label">INCIDENTES</div>
-            <div class="kpi-value"><%= incidentes %></div>
-            <div class="kpi-sub"><%= pctIncidentes %> del total</div>
-          </div>
-        </div>
+    if (value !== undefined && value !== null && value !== '') {
+      if (typeof value === 'string' && value.includes('%')) {
+        const parsed = pctNumber(value);
+        return parsed.toFixed(places) + '%';
+      }
 
-        <div class="kpi kpi-orange">
-          <div class="kpi-icon">📄</div>
-          <div class="kpi-text">
-            <div class="kpi-label">REQUERIMIENTOS</div>
-            <div class="kpi-value"><%= requerimientos %></div>
-            <div class="kpi-sub"><%= pctRequerimientos %> del total</div>
-          </div>
-        </div>
+      const numeric = Number(value);
+      if (Number.isFinite(numeric)) {
+        const pctValue = numeric > 0 && numeric <= 1 ? numeric * 100 : numeric;
+        return pctValue.toFixed(places) + '%';
+      }
+    }
 
-        <div class="kpi kpi-purple">
-          <div class="kpi-icon">◔</div>
-          <div class="kpi-text">
-            <div class="kpi-label">% PARTICIPACIÓN DE INCIDENTES</div>
-            <div class="kpi-value"><%= pctIncidentes %></div>
-            <div class="kpi-sub">del total</div>
-          </div>
-        </div>
+    if (!num(total)) return (0).toFixed(places) + '%';
+    return ((num(numerator) / num(total)) * 100).toFixed(places) + '%';
+  }
 
-        <div class="kpi kpi-cyan">
-          <div class="kpi-icon">◕</div>
-          <div class="kpi-text">
-            <div class="kpi-label">% PARTICIPACIÓN DE REQUERIMIENTOS</div>
-            <div class="kpi-value"><%= pctRequerimientos %></div>
-            <div class="kpi-sub">del total</div>
-          </div>
-        </div>
+  function iconSvg(type) {
+    if (type === 'dashboard') {
+      return `
+        <svg width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
+          <g fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="7" y="8" width="40" height="34" rx="3"></rect>
+            <path d="M17 47h20M27 42v5"></path>
+            <path d="M13 30l7-7 6 4 8-10 7 5"></path>
+            <circle cx="38" cy="16" r="6"></circle>
+            <path d="M38 10v6h6"></path>
+          </g>
+        </svg>`;
+    }
 
-        <div class="kpi kpi-blue">
-          <div class="kpi-icon">⚖</div>
-          <div class="kpi-text">
-            <div class="kpi-label">BRECHA</div>
-            <div class="kpi-value"><%= brecha %></div>
-            <div class="kpi-sub">Req. - Inc.</div>
-          </div>
-        </div>
-      </div>
+    if (type === 'incident') {
+      return `
+        <svg width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
+          <g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M27 7L49 46H5L27 7z"></path>
+            <path d="M27 20v13"></path>
+            <circle cx="27" cy="40" r="1.8" fill="#fff" stroke="none"></circle>
+          </g>
+        </svg>`;
+    }
 
-      <div class="content-row">
-        <div class="panel">
-          <div class="panel-header">
-            <span>INCIDENTE VS REQUERIMIENTO MENSUAL</span>
-          </div>
-          <div class="panel-body panel-donut">
-            <div class="donut-box">
-              <%
-                const total = donutIncidentes + donutRequerimientos;
-                const pctI = total ? (donutIncidentes / total) * 100 : 0;
-                const pctR = total ? (donutRequerimientos / total) * 100 : 0;
-              %>
-              <div
-                class="donut"
-                style="background: conic-gradient(#1f6fe5 0 <%= pctI %>%, #ff6a00 <%= pctI %>% 100%);"
-              >
-                <div class="donut-center"></div>
-              </div>
-            </div>
+    if (type === 'clipboard') {
+      return `
+        <svg width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
+          <g fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="10" y="11" width="34" height="37" rx="3"></rect>
+            <path d="M20 11V7h14v4"></path>
+            <rect x="18" y="5" width="18" height="9" rx="3"></rect>
+            <path d="M18 25l3 3 5-6M30 25h8M18 36l3 3 5-6M30 36h8"></path>
+          </g>
+        </svg>`;
+    }
 
-            <div class="legend-box">
-              <div class="legend-item">
-                <span class="dot blue"></span>
-                <div>
-                  <div class="legend-title">Incidentes</div>
-                  <div class="legend-sub"><%= incidentes %> (<%= pctIncidentes %>)</div>
-                </div>
-              </div>
-              <div class="legend-item">
-                <span class="dot orange"></span>
-                <div>
-                  <div class="legend-title">Requerimientos</div>
-                  <div class="legend-sub"><%= requerimientos %> (<%= pctRequerimientos %>)</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    if (type === 'pie') {
+      return `
+        <svg width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
+          <g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="27" cy="27" r="19"></circle>
+            <path d="M27 8v19h19"></path>
+            <path d="M27 27L14 41"></path>
+          </g>
+        </svg>`;
+    }
 
-        <div class="panel">
-          <div class="panel-header">
-            <span>RESUMEN DE ATENCIONES POR TIPO</span>
-          </div>
-          <div class="panel-body">
-            <table class="summary-table">
-              <thead>
-                <tr>
-                  <th>UP</th>
-                  <th>INCIDENTES</th>
-                  <th>REQUERIMIENTOS</th>
-                  <th>TOTAL</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><%= tabla.up %></td>
-                  <td><%= tabla.incidentes %></td>
-                  <td><%= tabla.requerimientos %></td>
-                  <td><%= tabla.total %></td>
-                </tr>
-                <tr class="pct-row">
-                  <td>%</td>
-                  <td><%= tabla.pctIncidentes %></td>
-                  <td><%= tabla.pctRequerimientos %></td>
-                  <td><%= tabla.pctTotal %></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+    if (type === 'donut') {
+      return `
+        <svg width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
+          <g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="27" cy="27" r="18"></circle>
+            <circle cx="27" cy="27" r="8"></circle>
+            <path d="M27 9v10M27 9a18 18 0 0 1 18 18H35"></path>
+          </g>
+        </svg>`;
+    }
 
-      <div class="insight-row">
-        <div class="insight-icon">🎯</div>
-        <div class="insight-title">DISTRIBUCIÓN DE ATENCIONES POR TIPO</div>
-        <div class="insight-divider"></div>
-        <div class="insight-text"><%= insight %></div>
-      </div>
+    if (type === 'balance') {
+      return `
+        <svg width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
+          <g fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M27 8v36M18 47h18M14 15h26M27 10l-13 5M27 10l13 5"></path>
+            <path d="M14 15L6 31h16L14 15zM40 15l-8 16h16L40 15z"></path>
+          </g>
+        </svg>`;
+    }
+
+    if (type === 'bulb') {
+      return `
+        <svg width="66" height="66" viewBox="0 0 66 66" aria-hidden="true">
+          <g fill="none" stroke="#1264d8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M33 11c-10 0-18 8-18 18 0 6.7 3.6 11.3 8.1 15.2 2.7 2.4 4.1 5.1 4.6 8.2h10.6c.5-3.1 1.9-5.8 4.6-8.2C47.4 40.3 51 35.7 51 29c0-10-8-18-18-18z"></path>
+            <path d="M27 57h12M29 62h8"></path>
+            <path d="M33 3v4M10 12l4 4M56 12l-4 4M4 31h5M57 31h5"></path>
+            <path d="M25 34v-8l8-4v8l8-4v8"></path>
+          </g>
+        </svg>`;
+    }
+
+    return '';
+  }
+
+  const periodoFinal = typeof periodo !== 'undefined' && periodo
+    ? periodo
+    : 'Periodo';
+
+  const tituloFinal = typeof titulo !== 'undefined' && titulo
+    ? titulo
+    : `Poderosa - ${periodoFinal} - Incidentes vs Requerimientos`;
+
+  const logoFinal = typeof logoText !== 'undefined' && logoText
+    ? logoText
+    : 'COMM';
+
+  const totalFinal = num(typeof totalAtenciones !== 'undefined' ? totalAtenciones : 0);
+  const incidentesFinal = num(typeof incidentes !== 'undefined' ? incidentes : 0);
+  const requerimientosFinal = num(typeof requerimientos !== 'undefined' ? requerimientos : 0);
+
+  const pctIncFinal = pctText(
+    typeof pctIncidentes !== 'undefined' ? pctIncidentes : '',
+    incidentesFinal,
+    totalFinal,
+    0
+  );
+
+  const pctReqFinal = pctText(
+    typeof pctRequerimientos !== 'undefined' ? pctRequerimientos : '',
+    requerimientosFinal,
+    totalFinal,
+    0
+  );
+
+  const brechaFinal = num(
+    typeof brecha !== 'undefined'
+      ? brecha
+      : requerimientosFinal - incidentesFinal
+  );
+
+  let rawRows = [];
+
+  if (typeof resumenRows !== 'undefined' && Array.isArray(resumenRows)) {
+    rawRows = resumenRows;
+  } else if (typeof tablaRows !== 'undefined' && Array.isArray(tablaRows)) {
+    rawRows = tablaRows;
+  } else if (
+    typeof tabla !== 'undefined' &&
+    tabla &&
+    Array.isArray(tabla.rows)
+  ) {
+    rawRows = tabla.rows;
+  }
+
+  const rowsFinal = rawRows
+    .map(function(row) {
+      const up = String(row.up || row.unidad || row.nombre || '').trim();
+      const inc = num(row.incidentes || row.incidente || row.inc);
+      const req = num(row.requerimientos || row.requerimiento || row.req);
+      const total = num(row.total) || inc + req;
+
+      return {
+        up: up,
+        incidentes: inc,
+        requerimientos: req,
+        total: total
+      };
+    })
+    .filter(function(row) {
+      return row.up && row.up.toUpperCase() !== 'TOTAL' && row.up !== '%';
+    });
+
+  if (
+    !rowsFinal.length &&
+    typeof tabla !== 'undefined' &&
+    tabla &&
+    String(tabla.up || '').trim() &&
+    String(tabla.up || '').trim().toUpperCase() !== 'TOTAL'
+  ) {
+    rowsFinal.push({
+      up: String(tabla.up).trim(),
+      incidentes: num(tabla.incidentes),
+      requerimientos: num(tabla.requerimientos),
+      total: num(tabla.total) || num(tabla.incidentes) + num(tabla.requerimientos)
+    });
+  }
+
+  const totalTabla = {
+    incidentes: rowsFinal.length
+      ? rowsFinal.reduce(function(acc, row) { return acc + row.incidentes; }, 0)
+      : incidentesFinal,
+    requerimientos: rowsFinal.length
+      ? rowsFinal.reduce(function(acc, row) { return acc + row.requerimientos; }, 0)
+      : requerimientosFinal,
+    total: rowsFinal.length
+      ? rowsFinal.reduce(function(acc, row) { return acc + row.total; }, 0)
+      : totalFinal
+  };
+
+  const donutIncPct = Math.max(0, Math.min(100, pctNumber(pctIncFinal)));
+
+  const insightFinal = typeof insight !== 'undefined' && insight
+    ? insight
+    : `Predominan los requerimientos, con el ${pctReqFinal} de las atenciones del mes, lo que evidencia una gestión mayormente planificada y controlada.`;
+%>
+
+<div class="slide">
+  <div class="top-curve"></div>
+
+  <header class="header">
+    <div class="title-wrap">
+      <div class="title-bar"></div>
+      <h1 class="title"><%= tituloFinal %></h1>
     </div>
-  </div>
+
+    <div class="logo">
+      <div class="logo-symbol"></div>
+      <div><%= logoFinal %></div>
+    </div>
+  </header>
+
+  <section class="kpi-row">
+    <article class="kpi-card accent-blue">
+      <div class="kpi-icon"><%- iconSvg('dashboard') %></div>
+      <div class="kpi-content">
+        <div class="kpi-label">Total atenciones</div>
+        <div class="kpi-value"><%= totalFinal %></div>
+        <div class="kpi-sub">100% del total</div>
+      </div>
+    </article>
+
+    <article class="kpi-card accent-teal">
+      <div class="kpi-icon"><%- iconSvg('incident') %></div>
+      <div class="kpi-content">
+        <div class="kpi-label">Incidentes</div>
+        <div class="kpi-value"><%= incidentesFinal %></div>
+        <div class="kpi-sub"><%= pctIncFinal %> del total</div>
+      </div>
+    </article>
+
+    <article class="kpi-card accent-orange">
+      <div class="kpi-icon"><%- iconSvg('clipboard') %></div>
+      <div class="kpi-content">
+        <div class="kpi-label">Requerimientos</div>
+        <div class="kpi-value"><%= requerimientosFinal %></div>
+        <div class="kpi-sub"><%= pctReqFinal %> del total</div>
+      </div>
+    </article>
+
+    <article class="kpi-card accent-purple">
+      <div class="kpi-icon"><%- iconSvg('pie') %></div>
+      <div class="kpi-content">
+        <div class="kpi-label">% participación de incidentes</div>
+        <div class="kpi-value"><%= pctIncFinal %></div>
+        <div class="kpi-sub">del total</div>
+      </div>
+    </article>
+
+    <article class="kpi-card accent-teal">
+      <div class="kpi-icon"><%- iconSvg('donut') %></div>
+      <div class="kpi-content">
+        <div class="kpi-label">% participación de requerimientos</div>
+        <div class="kpi-value"><%= pctReqFinal %></div>
+        <div class="kpi-sub">del total</div>
+      </div>
+    </article>
+
+    <article class="kpi-card accent-blue">
+      <div class="kpi-icon"><%- iconSvg('balance') %></div>
+      <div class="kpi-content">
+        <div class="kpi-label">Brecha</div>
+        <div class="kpi-value"><%= brechaFinal %></div>
+        <div class="kpi-sub">Req. - Inc.</div>
+      </div>
+    </article>
+  </section>
+
+  <section class="content-grid">
+    <article class="panel">
+      <div class="panel-title">Incidentes vs Requerimientos - Mensual</div>
+
+      <div class="donut-content">
+        <div class="donut-wrap">
+          <div
+            class="donut"
+            style="background: conic-gradient(#1d71e8 0 <%= donutIncPct %>%, #ff6800 <%= donutIncPct %>% 100%);"
+          ></div>
+        </div>
+
+        <div class="legend">
+          <div class="legend-item">
+            <span class="legend-dot blue"></span>
+            <div>
+              <div class="legend-name">Incidentes</div>
+              <div class="legend-value"><%= incidentesFinal %> (<%= pctIncFinal %>)</div>
+            </div>
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-dot orange"></span>
+            <div>
+              <div class="legend-name">Requerimientos</div>
+              <div class="legend-value"><%= requerimientosFinal %> (<%= pctReqFinal %>)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel">
+      <div class="panel-title">Resumen de Atenciones por Tipo</div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="2" style="width: 22%;">UP</th>
+              <th colspan="2">Atenciones</th>
+              <th rowspan="2" style="width: 20%;">Total</th>
+            </tr>
+            <tr>
+              <th style="width: 29%;">Incidentes</th>
+              <th style="width: 29%;">Requerimientos</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% rowsFinal.forEach(function(row) { %>
+              <tr>
+                <td><%= row.up %></td>
+                <td><%= row.incidentes %></td>
+                <td><%= row.requerimientos %></td>
+                <td><%= row.total %></td>
+              </tr>
+            <% }); %>
+
+            <tr class="row-total">
+              <td>TOTAL</td>
+              <td><%= totalTabla.incidentes %></td>
+              <td><%= totalTabla.requerimientos %></td>
+              <td><%= totalTabla.total %></td>
+            </tr>
+
+            <tr class="row-percent">
+              <td>%</td>
+              <td><%= pctIncFinal %></td>
+              <td><%= pctReqFinal %></td>
+              <td>100%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <section class="insight-row">
+    <div class="insight-icon-wrap">
+      <div class="insight-icon"><%- iconSvg('bulb') %></div>
+    </div>
+
+    <div class="insight-heading">
+      Distribución de<br />Atenciones por Tipo
+    </div>
+
+    <div class="insight-divider"></div>
+
+    <div class="insight-text"><%= insightFinal %></div>
+  </section>
+</div>
 </body>
 </html>
