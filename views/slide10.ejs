@@ -91,33 +91,45 @@
     }
 
     .s10-kpi-icon {
-      width: 72px;
-      height: 72px;
-      border-radius: 18px;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 36px;
-      font-weight: 900;
-      box-shadow: 0 9px 16px rgba(0,0,0,0.16);
-    }
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow:
+    0 10px 18px rgba(6, 41, 104, 0.20),
+    inset 0 1px 0 rgba(255,255,255,0.18);
+}
 
-    .s10-bg-blue {
-      background: linear-gradient(135deg, #1264df, #06339b);
-    }
+.s10-kpi-icon svg {
+  width: 42px;
+  height: 42px;
+  display: block;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
-    .s10-bg-teal {
-      background: linear-gradient(135deg, #1ac4c6, #087a87);
-    }
+.s10-bg-blue {
+  background: linear-gradient(145deg, #176ce8 0%, #0741b5 100%);
+}
 
-    .s10-bg-orange {
-      background: linear-gradient(135deg, #ffb51d, #ff5f00);
-    }
+.s10-bg-teal {
+  background: linear-gradient(145deg, #19c5c7 0%, #078b9e 100%);
+}
 
-    .s10-bg-purple {
-      background: linear-gradient(135deg, #9542e8, #5520aa);
-    }
+.s10-bg-orange {
+  background: linear-gradient(145deg, #ffb51c 0%, #ff7200 100%);
+}
+
+.s10-bg-purple {
+  background: linear-gradient(145deg, #a144ed 0%, #6722c7 100%);
+}
 
     .s10-kpi-label {
       font-size: 14px;
@@ -211,6 +223,16 @@
       box-shadow: 0 8px 16px rgba(11,45,92,0.20);
     }
 
+.s10-summary-icon svg {
+  width: 45px;
+  height: 45px;
+  stroke: #ffffff;
+  fill: none;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
     .s10-summary-title {
       font-size: 22px;
       font-weight: 900;
@@ -225,76 +247,78 @@
     }
 
     .s10-insights-card {
-      background: linear-gradient(135deg, #06349d 0%, #0d65df 48%, #12b6b9 100%);
-      border-radius: 18px;
-      box-shadow: 0 8px 18px rgba(11,45,92,0.18);
-      display: grid;
-      grid-template-columns: 76px 1fr;
-      align-items: start;
-      padding: 18px 30px 18px 28px;
-      color: white;
-      overflow: hidden;
-    }
+  background: linear-gradient(
+    110deg,
+    #0738a2 0%,
+    #0d63dc 52%,
+    #13b9bc 100%
+  );
+  border-radius: 18px;
+  box-shadow: 0 8px 18px rgba(11,45,92,0.18);
+  padding: 17px 30px 16px 28px;
+  color: #ffffff;
+  overflow: hidden;
+  display: block;
+}
 
-    .s10-insight-main-icon {
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      background: #ffffff;
-      color: #0b3298;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 31px;
-      font-weight: 900;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.16);
-      margin-top: 38px;
-    }
+.s10-insights-title {
+  font-size: 22px;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 0 0 11px 58px;
+  letter-spacing: 0.2px;
+  color: #ffffff;
+}
 
-    .s10-insights-title {
-      font-size: 23px;
-      font-weight: 900;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      letter-spacing: 0.2px;
-      color: #ffffff;
-    }
+.s10-insight-row {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 14px;
+  align-items: center;
+  min-height: 42px;
+}
 
-    .s10-insight-row {
-      display: grid;
-      grid-template-columns: 28px 1fr;
-      gap: 12px;
-      align-items: start;
-      margin-bottom: 7px;
-    }
+.s10-insight-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #0b4cc5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.12);
+}
 
-    .s10-check-icon {
-      width: 23px;
-      height: 23px;
-      border-radius: 50%;
-      background: #ffffff;
-      color: #0d55d8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      font-weight: 900;
-      margin-top: 0;
-    }
+.s10-insight-badge svg {
+  width: 21px;
+  height: 21px;
+  display: block;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
-    .s10-insight-text {
-      font-size: 16.5px;
-      line-height: 1.18;
-      font-weight: 700;
-      color: #ffffff;
-      padding-right: 10px;
-    }
+.s10-insight-badge-star svg {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1.2;
+}
 
-    .s10-insight-divider {
-      height: 1px;
-      border-top: 1px dashed rgba(255,255,255,0.42);
-      margin: 6px 0 9px 40px;
-    }
+.s10-insight-text {
+  font-size: 16.5px;
+  line-height: 1.22;
+  font-weight: 700;
+  color: #ffffff;
+  padding-right: 8px;
+}
+
+.s10-insight-divider {
+  height: 1px;
+  border-top: 1px dashed rgba(255,255,255,0.36);
+  margin: 6px 0 7px 56px;
+}
 
     .s10-axis-label {
       fill: #08245c;
@@ -421,54 +445,130 @@
   </div>
 
   <div class="s10-kpi-row">
-    <div class="s10-kpi-card">
-      <div class="s10-kpi-icon s10-bg-blue">▣</div>
-      <div>
-        <div class="s10-kpi-label">Días</div>
-        <div class="s10-kpi-value"><%= diasActivos %></div>
-      </div>
+
+  <!-- KPI 1: DÍAS -->
+  <div class="s10-kpi-card">
+    <div class="s10-kpi-icon s10-bg-blue">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+        <path d="M8 3v4"></path>
+        <path d="M16 3v4"></path>
+        <path d="M3 10h18"></path>
+        <path d="M7 14h2"></path>
+        <path d="M11 14h2"></path>
+        <path d="M15 14h2"></path>
+        <path d="M7 17h2"></path>
+        <path d="M11 17h2"></path>
+        <path d="M15 17h2"></path>
+      </svg>
     </div>
 
-    <div class="s10-kpi-card">
-      <div class="s10-kpi-icon s10-bg-teal">●●●</div>
-      <div>
-        <div class="s10-kpi-label">Atenciones</div>
-        <div class="s10-kpi-value s10-teal"><%= totalAt %></div>
-      </div>
-    </div>
-
-    <div class="s10-kpi-card">
-      <div class="s10-kpi-icon s10-bg-blue">◷</div>
-      <div>
-        <div class="s10-kpi-label">Horas</div>
-        <div class="s10-kpi-value"><%= totalHr %></div>
-      </div>
-    </div>
-
-    <div class="s10-kpi-card">
-      <div class="s10-kpi-icon s10-bg-orange">▥</div>
-      <div>
-        <div class="s10-kpi-label">Promedio de<br>Atenciones por Día</div>
-        <div class="s10-kpi-value s10-orange"><%= promedioAt %></div>
-      </div>
-    </div>
-
-    <div class="s10-kpi-card">
-      <div class="s10-kpi-icon s10-bg-purple">◷</div>
-      <div>
-        <div class="s10-kpi-label">Promedio de<br>Horas por Día</div>
-        <div class="s10-kpi-value s10-purple"><%= promedioHr %></div>
-      </div>
-    </div>
-
-    <div class="s10-kpi-card">
-      <div class="s10-kpi-icon s10-bg-teal">▦</div>
-      <div>
-        <div class="s10-kpi-label">Horas por<br>Atención</div>
-        <div class="s10-kpi-value s10-teal"><%= horasAt %></div>
-      </div>
+    <div>
+      <div class="s10-kpi-label">Días</div>
+      <div class="s10-kpi-value"><%= diasActivos %></div>
     </div>
   </div>
+
+
+  <!-- KPI 2: ATENCIONES -->
+  <div class="s10-kpi-card">
+    <div class="s10-kpi-icon s10-bg-teal">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 13a8 8 0 0 1 16 0"></path>
+        <path d="M4 13v4a3 3 0 0 0 3 3h1"></path>
+        <rect x="3" y="12" width="4" height="7" rx="2"></rect>
+        <rect x="17" y="12" width="4" height="7" rx="2"></rect>
+        <path d="M21 18v1a3 3 0 0 1-3 3h-3"></path>
+      </svg>
+    </div>
+
+    <div>
+      <div class="s10-kpi-label">Atenciones</div>
+      <div class="s10-kpi-value s10-teal"><%= totalAt %></div>
+    </div>
+  </div>
+
+
+  <!-- KPI 3: HORAS -->
+  <div class="s10-kpi-card">
+    <div class="s10-kpi-icon s10-bg-blue">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M12 7v6"></path>
+        <path d="M12 13l4 2"></path>
+      </svg>
+    </div>
+
+    <div>
+      <div class="s10-kpi-label">Horas</div>
+      <div class="s10-kpi-value"><%= totalHr %></div>
+    </div>
+  </div>
+
+
+  <!-- KPI 4: PROMEDIO ATENCIONES -->
+  <div class="s10-kpi-card">
+    <div class="s10-kpi-icon s10-bg-orange">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 19h16"></path>
+        <path d="M5 16l5-5 3 3 6-7"></path>
+        <path d="M15 7h4v4"></path>
+      </svg>
+    </div>
+
+    <div>
+      <div class="s10-kpi-label">
+        Promedio de<br>
+        Atenciones por Día
+      </div>
+      <div class="s10-kpi-value s10-orange"><%= promedioAt %></div>
+    </div>
+  </div>
+
+
+  <!-- KPI 5: PROMEDIO HORAS -->
+  <div class="s10-kpi-card">
+    <div class="s10-kpi-icon s10-bg-purple">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M12 6v7"></path>
+        <path d="M12 13h5"></path>
+      </svg>
+    </div>
+
+    <div>
+      <div class="s10-kpi-label">
+        Promedio de<br>
+        Horas por Día
+      </div>
+      <div class="s10-kpi-value s10-purple"><%= promedioHr %></div>
+    </div>
+  </div>
+
+
+  <!-- KPI 6: HORAS POR ATENCIÓN -->
+  <div class="s10-kpi-card">
+    <div class="s10-kpi-icon s10-bg-teal">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="13" r="8"></circle>
+        <path d="M12 9v5"></path>
+        <path d="M12 14l3 2"></path>
+        <path d="M9 3h6"></path>
+        <path d="M12 3v2"></path>
+        <path d="M18 6l1.5-1.5"></path>
+      </svg>
+    </div>
+
+    <div>
+      <div class="s10-kpi-label">
+        Horas por<br>
+        Atención
+      </div>
+      <div class="s10-kpi-value s10-teal"><%= horasAt %></div>
+    </div>
+  </div>
+
+</div>
 
   <div class="s10-chart-panel">
     <div class="s10-panel-title">ATENCIONES Y HORAS DIARIAS - <%= String(safePeriodo).toUpperCase() %></div>
@@ -589,7 +689,15 @@
 
   <div class="s10-bottom-grid">
     <div class="s10-summary-card">
-      <div class="s10-summary-icon">↗</div>
+      <div class="s10-summary-icon">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M4 20V10"></path>
+    <path d="M9 20v-6"></path>
+    <path d="M14 20v-9"></path>
+    <path d="M19 20V6"></path>
+    <path d="M4 8l5-4 5 3 6-5"></path>
+  </svg>
+</div>
 
       <div>
         <div class="s10-summary-title">Tendencia de Atenciones Diarias</div>
@@ -600,28 +708,48 @@
     </div>
 
     <div class="s10-insights-card">
-      <div class="s10-insight-main-icon">●</div>
 
-      <div>
-        <div class="s10-insights-title">INSIGHTS EJECUTIVOS</div>
+  <div class="s10-insights-title">
+    INSIGHTS EJECUTIVOS
+  </div>
 
-        <div class="s10-insight-row">
-          <div class="s10-check-icon">✓</div>
-          <div class="s10-insight-text">
-            <%= safeInsights[0] || 'La distribución diaria evidencia el comportamiento operativo del periodo seleccionado.' %>
-          </div>
-        </div>
+  <!-- INSIGHT 1 -->
+  <div class="s10-insight-row">
 
-        <div class="s10-insight-divider"></div>
-
-        <div class="s10-insight-row">
-          <div class="s10-check-icon">✓</div>
-          <div class="s10-insight-text">
-            <%= safeInsights[1] || 'El seguimiento diario permite identificar picos de demanda y asignar recursos con mayor precisión.' %>
-          </div>
-        </div>
-      </div>
+    <div class="s10-insight-badge s10-insight-badge-star">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3.7l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8z"></path>
+      </svg>
     </div>
+
+    <div class="s10-insight-text">
+      <%= safeInsights[0] ||
+        'La distribución diaria evidencia el comportamiento operativo del periodo seleccionado.'
+      %>
+    </div>
+
+  </div>
+
+  <div class="s10-insight-divider"></div>
+
+  <!-- INSIGHT 2 -->
+  <div class="s10-insight-row">
+
+    <div class="s10-insight-badge">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 12.5l4 4L19 7"></path>
+      </svg>
+    </div>
+
+    <div class="s10-insight-text">
+      <%= safeInsights[1] ||
+        'El seguimiento diario permite identificar picos de demanda y asignar recursos con mayor precisión.'
+      %>
+    </div>
+
+  </div>
+
+</div>
   </div>
 </div>
 </body>
