@@ -250,6 +250,14 @@
       font-weight: 900;
     }
 
+    
+    .top10-row td {
+      background: #f28c38 !important;
+      color: #000;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
     .bottom-box {
       position: relative;
       z-index: 3;
@@ -382,6 +390,13 @@
     item.pctAcumulado = totalSum ? (acumulado / totalSum) * 100 : 0;
   });
 
+  
+const totalTop10 = processedItems.reduce(
+  (suma, item) => suma + item.cantidad, 0
+);
+
+const porcentajeTop10 = pct(totalTop10, totalSum);
+
   const top1 = processedItems[0] || {
     nombre: '-',
     cantidad: 0,
@@ -487,7 +502,7 @@
     <div class="panel">
       <div class="panel-title">
         <div class="panel-icon">↗</div>
-        Pareto de Suministros en Requerimientos
+        Pareto de Top 10 suministros
       </div>
 
       <div class="chart-box">
@@ -588,11 +603,19 @@
               </tr>
             <% }) %>
 
+             
+            <tr class="top10-row">
+              <td colspan="2">Total 10 suministros</td>
+              <td class="center"><%= totalTop10 %></td>
+              <td class="center"><%= porcentajeTop10 %></td>
+            </tr>
+
             <tr class="total-row">
               <td colspan="2">TOTAL GENERAL</td>
               <td class="center"><%= totalSum %></td>
               <td class="center">100.00%</td>
             </tr>
+
           </tbody>
         </table>
       </div>
