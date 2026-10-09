@@ -518,6 +518,25 @@
     typeof participacionSuperficie !== 'undefined' ? participacionSuperficie : calcPct(totalSuperficieFinal, totalAtencionesFinal)
   );
 
+  const nombresMeses = {
+  Ene: 'Enero',
+  Feb: 'Febrero',
+  Mar: 'Marzo',
+  Abr: 'Abril',
+  May: 'Mayo',
+  Jun: 'Junio',
+  Jul: 'Julio',
+  Ago: 'Agosto',
+  Sep: 'Septiembre',
+  Oct: 'Octubre',
+  Nov: 'Noviembre',
+  Dic: 'Diciembre'
+};
+
+const mesAnterior = tipoItemsData.length >= 2
+  ? nombresMeses[tipoItemsData[tipoItemsData.length - 2].mes.substring(0, 3)] || 'Periodo anterior'
+  : 'Periodo anterior';
+
   const previousTotal = tipoItemsData.length >= 2 ? num(tipoItemsData[tipoItemsData.length-2].total) : 0;
   const variationComputed = previousTotal
     ? (((totalAtencionesFinal - previousTotal) / previousTotal) * 100).toFixed(1) + '%'
@@ -618,7 +637,7 @@
     <div class="kpi-card">
       <div class="kpi-icon bg-blue"><%- iconSvg('variation') %></div>
       <div>
-        <div class="kpi-label">Variación<br>vs Mayo</div>
+        <div class="kpi-label">Variación<br>vs <%= mesAnterior %></div>
         <div class="kpi-value"><%= variationFinal %></div>
       </div>
     </div>
