@@ -518,23 +518,28 @@
     typeof participacionSuperficie !== 'undefined' ? participacionSuperficie : calcPct(totalSuperficieFinal, totalAtencionesFinal)
   );
 
-  const nombresMeses = {
-  Ene: 'Enero',
-  Feb: 'Febrero',
-  Mar: 'Marzo',
-  Abr: 'Abril',
-  May: 'Mayo',
-  Jun: 'Junio',
-  Jul: 'Julio',
-  Ago: 'Agosto',
-  Sep: 'Septiembre',
-  Oct: 'Octubre',
-  Nov: 'Noviembre',
-  Dic: 'Diciembre'
+  const nombresMeses = [
+  'Enero', 'Febrero', 'Marzo', 'Abril',
+  'Mayo', 'Junio', 'Julio', 'Agosto',
+  'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+];
+
+const mesesNumero = {
+  enero: 0, febrero: 1, marzo: 2,
+  abril: 3, mayo: 4, junio: 5,
+  julio: 6, agosto: 7, septiembre: 8,
+  octubre: 9, noviembre: 10, diciembre: 11
 };
 
-const mesAnterior = tipoItemsData.length >= 2
-  ? nombresMeses[tipoItemsData[tipoItemsData.length - 2].mes.substring(0, 3)] || 'Periodo anterior'
+const nombreMesActual = String(periodoFinal)
+  .trim()
+  .split(/\s+/)[0]
+  .toLowerCase();
+
+const indiceMesActual = mesesNumero[nombreMesActual];
+
+const mesAnterior = indiceMesActual !== undefined
+  ? nombresMeses[(indiceMesActual + 11) % 12]
   : 'Periodo anterior';
 
   const previousTotal = tipoItemsData.length >= 2 ? num(tipoItemsData[tipoItemsData.length-2].total) : 0;
